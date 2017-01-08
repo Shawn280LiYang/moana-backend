@@ -71,7 +71,6 @@ public class LoginServiceImpl implements LoginService {
         return result;
     }
 
-
     @Override
     public Map wxUserBaseInfo(String code) {
         String _url = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code",
