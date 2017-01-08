@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
+
+    <!-- Moana unit -->
+    <persistence-unit name="Moana">
+        <class>lab.io.rush.entity.Movie</class>
+        <class>lab.io.rush.entity.Tag</class>
+        <class>lab.io.rush.entity.User</class>
+        <class>lab.io.rush.entity.Order</class>
+        <exclude-unlisted-classes/>
+
+        <properties>
+            <!-- ENABLE THESE FOR MySQL/MariaDB -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://120.77.214.91:3306/moana_rush?useServerPrepStmts=false"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="your user name"/>
+            <property name="javax.persistence.jdbc.password" value="your password"/>
+
+            <property name="datanucleus.schema.autoCreateAll" value="true"/>
+            <property name="datanucleus.cache.level2.type" value="none"/>
+            <!--命名配置-->
+            <!--<property name="datanucleus.identifier.case" value="MixedCase" />-->
+        </properties>
+    </persistence-unit>
+
+</persistence>
