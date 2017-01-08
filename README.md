@@ -50,4 +50,4 @@
 
 ### 用户信息修改页 ###
 
-![WechatIMG67.jpeg]((https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG67.jpeg)
+![WechatIMG67.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG67.jpeg)
