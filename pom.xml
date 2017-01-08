@@ -123,9 +123,6 @@
                 </executions>
             </plugin>
 
-            <!--TODO 观察basedir需不需要去掉-->
-
-            <!--ENABLE本地测试:   mvn exec:java  -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
