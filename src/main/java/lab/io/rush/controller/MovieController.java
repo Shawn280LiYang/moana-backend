@@ -61,7 +61,7 @@ public class MovieController {
             List<Map> stockList = new ArrayList<>();
             for(int i=0;i<movieList.size();i++){
                 Map stock = new HashMap<>();
-                stock.put(movieList.get(i).getId(), movieService.getStock(movieList.get(i).getId()));
+                stock.put("ticketstock", movieService.getStock(movieList.get(i).getId()));
                 stockList.add(stock);
             }
             result.put("responseCode", Code.COMMON_SUCCESS);
