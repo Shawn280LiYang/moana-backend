@@ -52,19 +52,17 @@ public class MovieController {
     public Map getTicketStockAll(){
         Map result = new HashMap();
 
-        // 重写了这边的dao,这里不需要知道tag,所以不要用join查询, 提高查询效率 测试给出提升时间2s
         List<Movie> movieList = movieService.getMovieALlNoTag();
 
         if(movieList==null || movieList.size()==0){
             result.put("responseCode", Code.DATA_NOT_FOUND);
             result.put("responseMsg", "未查询到,请检测数据库连接或电影库为空");
         }else{
-            Map stockList = new HashMap<>();
-
+            List<Map> stockList = new ArrayList<>();
             for(int i=0;i<movieList.size();i++){
-                //stockList.put(movieList.get(i).getId(),movieList.get(i).getTicketstock());
-                // TODO 这里为了做cache, 不用上面这种get,而是去数据库查
-                stockList.put(movieList.get(i).getId(),movieService.getStock(movieList.get(i).getId()));
+                Map stock = new HashMap<>();
+                stock.put(movieList.get(i).getId(), movieService.getStock(movieList.get(i).getId()));
+                stockList.add(stock);
             }
             result.put("responseCode", Code.COMMON_SUCCESS);
             result.put("data", stockList);
