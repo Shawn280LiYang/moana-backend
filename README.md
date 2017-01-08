@@ -38,16 +38,16 @@
 
 ### 首页 ###
 
-![WechatIMG64.jpeg](https://bitbucket.org/repo/Mj6ezM/images/3979419931-WechatIMG64.jpeg)
+![WechatIMG64.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG64.jpeg)
 
 ### 用户个人主页 ###
 
-![WechatIMG65.jpeg](https://bitbucket.org/repo/Mj6ezM/images/415676532-WechatIMG65.jpeg)
+![WechatIMG65.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG65.jpeg)
 
 ### 登录页 ###
 
-![WechatIMG66.jpeg](https://bitbucket.org/repo/Mj6ezM/images/363283603-WechatIMG66.jpeg)
+![WechatIMG66.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG66.jpeg)
 
 ### 用户信息修改页 ###
 
-![WechatIMG67.jpeg](https://bitbucket.org/repo/Mj6ezM/images/1264714866-WechatIMG67.jpeg)
+![WechatIMG67.jpeg]((https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG67.jpeg)
