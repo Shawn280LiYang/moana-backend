@@ -38,8 +38,12 @@ public class MovieController {
     private final static Logger logger = LoggerFactory.getLogger(MovieController.class);
 
     @RequestMapping("/movieAll")
-    public List<MovieDto> getMovieAll(){
-        return movieService.getMovieAll();
+    public Map getMovieAll(){
+        Map result = new HashMap<>();
+
+        result.put("data",movieService.getMovieAll());
+
+        return result;
     }
 
 //    此接口暂时不需要,测试用
