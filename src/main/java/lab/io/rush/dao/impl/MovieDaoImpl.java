@@ -43,12 +43,12 @@ public class MovieDaoImpl implements MovieDao {
 
     @Override
     public List<Movie> findAll() {
-        return dataNucleusDao.querySelect("SELECT DISTINCT m FROM Movie m JOIN m.tags t ORDER BY m.id");
+        return dataNucleusDao.querySelect("SELECT DISTINCT m FROM Movie m JOIN m.tags t ORDER BY m.id ASC");
     }
 
     @Override
     public List<Movie> findAllNoTag() {
-        return dataNucleusDao.querySelect("SELECT m FROM Movie m ORDER BY m.id");
+        return dataNucleusDao.querySelect("SELECT m FROM Movie m ORDER BY m.id ASC");
     }
 
     @Override
