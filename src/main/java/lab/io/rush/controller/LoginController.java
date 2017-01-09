@@ -81,7 +81,6 @@ public class LoginController {
     }
 
     @RequestMapping("/userLogin")
-    @ResponseBody
     public Map userLogin(@RequestParam(value="username", defaultValue = "") String username,
                          @RequestParam(value="password", defaultValue = "") String password) {
         Map result = new HashMap();
