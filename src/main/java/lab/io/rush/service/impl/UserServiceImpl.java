@@ -1,10 +1,12 @@
 package lab.io.rush.service.impl;
 
 import lab.io.rush.dao.OrderDao;
+import lab.io.rush.dao.UserDao;
 import lab.io.rush.dto.OrderDto;
 import lab.io.rush.dto.UserPanelDto;
 import lab.io.rush.dto.UserInfoDto;
 import lab.io.rush.entity.Order;
+import lab.io.rush.entity.User;
 import lab.io.rush.service.OrderService;
 import lab.io.rush.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private OrderDao orderDao;
     @Autowired
+    private UserDao userDao;
+    @Autowired
     private OrderService orderService;
     @Autowired
     private HttpSession httpSession;
@@ -35,6 +39,7 @@ public class UserServiceImpl implements UserService {
         dto.setNickname((String)httpSession.getAttribute("nickname"));
 
         List<OrderDto> orderDtoList = null;
+
         List<Order> orderList = orderDao.findByUserid((Long)httpSession.getAttribute("uid"));
 
         if(orderDtoList!=null){
@@ -57,5 +62,25 @@ public class UserServiceImpl implements UserService {
         dto.setEmail((String)httpSession.getAttribute("email"));
 
         return dto;
+    }
+
+    @Override
+    public User find(Long id) {
+        return userDao.find(id);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+
+    @Override
+    public void persist(User user) {
+        userDao.persist(user);
+    }
+
+    @Override
+    public User merge(User user) {
+        return userDao.merge(user);
     }
 }

@@ -12,13 +12,8 @@ import java.util.List;
  */
 public interface MovieDao  {
 
-    @Cacheable(value = "Movie", key = "'MovieWithTag-id:'+#movieid")
+    @Cacheable(value = "Movie", key = "'Movie-id:'+#movieid")
     Movie find(Long movieid);
-
-    @Cacheable(value = "Movie", key = "'MovieNoTag-id:'+#movieid")
-    Movie findNoTag(Long movieid);
-
-    List<Movie> findAll();
 
     List<Movie> findAllNoTag();
 
@@ -28,9 +23,8 @@ public interface MovieDao  {
     void persist(Movie movie);
 
     @Caching(evict = {
-            @CacheEvict(value = "Movie",  key = "'MovieWithTag-id:'+#movie.id", beforeInvocation = true),
-            @CacheEvict(value = "Movie", key = "'MovieNoTag-id:'+#movie.id", beforeInvocation = true),
-            @CacheEvict(value = "Stock", key = "'Movie-id:'+#movie.id", beforeInvocation = true)
+            @CacheEvict(value = "Movie",  key = "'Movie-id:'+#movie.id", beforeInvocation = true),
+            @CacheEvict(value = "Stock", key = "'Stock-id:'+#movie.id", beforeInvocation = true)
     })
     Movie merge(Movie movie);
 }

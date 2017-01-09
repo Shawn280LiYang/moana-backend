@@ -21,48 +21,45 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserDao userDao;
-    @Autowired
     private UserService userService;
     @Autowired
     private HttpSession httpSession;
 
     @RequestMapping("/userPanel")
-    @ResponseBody
     public UserPanelDto getUserPanelInfo(){
         return userService.getUserHome();
     }
-
-//    @RequestMapping("/userPanel/{userid}")
-//    public UserPanelDto getUserPanelInfo(@PathVariable Long userid){
-//        return userService.getUserHome(userid);
-//    }
 
     @RequestMapping("/userInfo")
     public UserInfoDto getUserSettingInfo(){
         return userService.getUserSetting();
     }
 
-//    @RequestMapping("/userInfo/{userid}")
-//    public UserInfoDto getUserSettingInfo(@PathVariable Long userid){
-//        return userService.getUserSetting(userid);
-//    }
+    @RequestMapping("/testSetSession")
+    public String testSetSession(){
+        this.httpSession.setAttribute("test", "This is a test");
+        return new String("finished");
+    }
+
+    @RequestMapping("/testGetSession")
+    public String testGetSession(){
+        return (String) this.httpSession.getAttribute("test");
+    }
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
-    @ResponseBody
     public Map signUp(@RequestParam String username, @RequestParam String nickname,
                       @RequestParam String email, @RequestParam String password){
         Map result = new HashMap<>();
         //判断用户名是否被占用
-        if(userDao.findByUsername(username) != null){
+        if(userService.findByUsername(username) != null){
             result.put("responseCode", Code.COMMON_FAIL);
             result.put("responseMsg", "该用户名已存在");
         }else {
             // 原密码进行一次md5加密
-            User user = new User("user", username, nickname, email, DigestUtils.md5DigestAsHex(password.getBytes()));
+            User user = new User("login", username, nickname, email, DigestUtils.md5DigestAsHex(password.getBytes()));
             //存入数据库
-            userDao.persist(user);
-            // 给登录态(前端负责跳转)
+            userService.persist(user);
+            // 给与登录态并跳转(前端负责跳转)
             httpSession.setAttribute("uid",user.getId());
             httpSession.setAttribute("photo",user.getPhoto());
             httpSession.setAttribute("nickname",nickname);
@@ -76,7 +73,6 @@ public class UserController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    @ResponseBody
     public Map updateUserInfo(@RequestParam String email, @RequestParam String nickname){
         Map result = new HashMap<>();
 
@@ -86,20 +82,20 @@ public class UserController {
                                  (String)httpSession.getAttribute("groupid"),
                                  (String)httpSession.getAttribute("groupnickname"), email, nickname);
             //保存数据库
-            userDao.persist(user);
+            userService.persist(user);
             //标记登录态
             httpSession.setAttribute("uid",user.getId());
 
             result.put("responseCode", Code.COMMON_SUCCESS);
             result.put("responseMsg", "第三方登陆初始化成功");
         }else{
-            User user = userDao.find((Long)httpSession.getAttribute("uid"));
+            User user = userService.find((Long)httpSession.getAttribute("uid"));
             //更新email和nickname
             user.setEmail(email);
             user.setNickname(nickname);
 
             //更新数据库
-            userDao.merge(user);
+            userService.merge(user);
 
             result.put("responseCode", Code.COMMON_SUCCESS);
             result.put("responseMsg", "用户信息更新成功");

@@ -49,13 +49,14 @@ public class MovieController {
 //    此接口暂时不需要,测试用
     @RequestMapping("/movie/{movieid}")
     public MovieDto getMovieById(@PathVariable Long movieid){
-        return movieService.getMovieById(movieid);
+        return movieService.getMovieDto(movieid);
     }
 
     @RequestMapping("/ticketStockAll")
     public Map getTicketStockAll(){
         Map result = new HashMap();
 
+        // 重写了这边的dao,这里不需要知道tag,所以不要用join查询, 提高查询效率 测试给出提升时间2s
         List<Movie> movieList = movieService.getMovieALlNoTag();
 
         if(movieList==null || movieList.size()==0){
@@ -80,13 +81,13 @@ public class MovieController {
     public Map getTicketStock(@PathVariable Long movieid){
         Map result = new HashMap();
 
-        Movie movie = movieService.getMovieNoTag(movieid);
+        Movie movie = movieService.find(movieid);
 
         if(movie==null){
             result.put("responseCode", Code.DATA_NOT_FOUND);
             result.put("responseMsg", "未查询到,请检测数据库连接及电影ID");
         }else{
-            int stock = movieService.getStock(movieid);
+            int stock = movieService.getStock(movieid); // TODO 这里在cache 而不用movie.getTicketStock()拿??我的猜想
             result.put("responseCode", Code.COMMON_SUCCESS);
             result.put("data", stock);
         }
@@ -95,34 +96,34 @@ public class MovieController {
     }
 
     //cache测试
-    @RequestMapping("/testCache")
-    public void testCache(){
-        List<Movie> movieList1 = movieService.getMovieALlNoTag();
-
-        if(movieList1==null || movieList1.size()==0){
-        }else{
-            Map stockList1 = new HashMap<>();
-            System.out.println(System.currentTimeMillis());
-            for(int i=0;i<movieList1.size();i++){
-                stockList1.put(movieList1.get(i).getId(),movieService.getStock(movieList1.get(i).getId()));
-            }
-            System.out.println(System.currentTimeMillis());
-            System.out.println("stockList1: "+stockList1);
-        }
-
-        List<Movie> movieList2 = movieService.getMovieALlNoTag();
-
-        if(movieList2==null || movieList2.size()==0){
-        }else{
-            Map stockList2 = new HashMap<>();
-            System.out.println(System.currentTimeMillis());
-            for(int i=0;i<movieList2.size();i++){
-                stockList2.put(movieList2.get(i).getId(),movieService.getStock(movieList2.get(i).getId()));
-            }
-            System.out.println(System.currentTimeMillis());
-            System.out.println("stockList2: "+stockList2);
-        }
-    }
+//    @RequestMapping("/testCache")
+//    public void testCache(){
+//        List<Movie> movieList1 = movieService.getMovieALlNoTag();
+//
+//        if(movieList1==null || movieList1.size()==0){
+//        }else{
+//            Map stockList1 = new HashMap<>();
+//            System.out.println(System.currentTimeMillis());
+//            for(int i=0;i<movieList1.size();i++){
+//                stockList1.put(movieList1.get(i).getId(),movieService.getStock(movieList1.get(i).getId()));
+//            }
+//            System.out.println(System.currentTimeMillis());
+//            System.out.println("stockList1: "+stockList1);
+//        }
+//
+//        List<Movie> movieList2 = movieService.getMovieALlNoTag();
+//
+//        if(movieList2==null || movieList2.size()==0){
+//        }else{
+//            Map stockList2 = new HashMap<>();
+//            System.out.println(System.currentTimeMillis());
+//            for(int i=0;i<movieList2.size();i++){
+//                stockList2.put(movieList2.get(i).getId(),movieService.getStock(movieList2.get(i).getId()));
+//            }
+//            System.out.println(System.currentTimeMillis());
+//            System.out.println("stockList2: "+stockList2);
+//        }
+//    }
 
     @RequestMapping("/rush/{movieid}")
     public Map makeOrder(@PathVariable Long movieid){
@@ -135,7 +136,7 @@ public class MovieController {
             result.put("responseMsg","数据库连接错误");
             return result;
         }
-        if(purchased!=null & purchased.size() >= 20){ // TODO 正式版本改成2
+        if(purchased!=null & purchased.size() >= 20){ // TODO 后面改成2
             result.put("responseCode",Code.COMMON_FAIL);
             result.put("responseMsg","同一电影票同一用户不能买超过20张");
             return result;
@@ -143,9 +144,10 @@ public class MovieController {
 
         Order order = new Order(movieid, (Long)httpSession.getAttribute("uid"));
 
+        // TODO 考虑用 procedure
         if(movieService.getStock(movieid) > 0){
             try {
-                Movie movie = movieService.getMovieNoTag(movieid);
+                Movie movie = movieService.find(movieid);
                 movie.setTicketstock(movieService.getStock(movieid)-1);
                 movieService.merge(movie);
 

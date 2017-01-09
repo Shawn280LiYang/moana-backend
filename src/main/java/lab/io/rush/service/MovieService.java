@@ -10,11 +10,12 @@ import java.util.List;
  */
 public interface MovieService {
 
-    MovieDto getMovieById(Long id);
+    Movie find(Long id);
 
-    Movie getMovieNoTag(Long movieid);
+    MovieDto getMovieDto(Long id);
 
     List<MovieDto> getMovieAll();
+
     List<Movie> getMovieALlNoTag();
 
     int getStock(Long movieid);

@@ -3,13 +3,12 @@ package lab.io.rush.controller;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import lab.io.rush.dao.UserDao;
 import lab.io.rush.entity.User;
 import lab.io.rush.service.LoginService;
 import lab.io.rush.dto.Code;
+import lab.io.rush.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +23,14 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
     @Autowired
     private LoginService loginService;
     @Autowired
     private HttpSession httpSession;
 
-    private static final String wxAppId = "your wxid";
-    private static final String wbAppId = "your wbid";
+    private static final String wxAppId = "your id";
+    private static final String wbAppId = "your id";
 
     @RequestMapping("/checkLogin")
     public Map checkLogin() throws IOException{
@@ -54,7 +53,7 @@ public class LoginController {
     public Map getTicket(@RequestParam(value="username", defaultValue = "") String username) {
         Map result = new HashMap();
 
-        User user = userDao.findByUsername(username);
+        User user = userService.findByUsername(username);
 
         if(user == null){
             result.put("responseCode", Code.COMMON_FAIL);
@@ -64,7 +63,7 @@ public class LoginController {
             user.setTimestamp(System.currentTimeMillis()/1000);
 
             try {
-                userDao.merge(user);
+                userService.merge(user);
 
                 Map data = new HashMap();
                 data.put("timestamp", user.getTimestamp());
@@ -87,7 +86,7 @@ public class LoginController {
                          @RequestParam(value="password", defaultValue = "") String password) {
         Map result = new HashMap();
 
-        User user = userDao.findByUsername(username);
+        User user = userService.findByUsername(username);
 
         if(user == null){
             result.put("responseCode", Code.COMMON_FAIL);
@@ -95,7 +94,7 @@ public class LoginController {
         }
         else {
             if(user.getTimestamp() == 0) {
-                result.put("user",user);
+                result.put("login",user);
 
                 result.put("responseCode", Code.DATA_NOT_FOUND);
                 result.put("responseMsg", "登陆错误");
@@ -107,7 +106,7 @@ public class LoginController {
                 if (hashedPswStr.equals(password)) {
                     user.setTimestamp((long) 0);
                     try {
-                        userDao.merge(user);
+                        userService.merge(user);
 
                         httpSession.setAttribute("uid", user.getId());
                         httpSession.setAttribute("photo",user.getPhoto());
@@ -132,7 +131,7 @@ public class LoginController {
 
     @RequestMapping("/encryptForTest")
     public String encrypt(@RequestParam(value="password", defaultValue = "testpassword") String password,
-                          @RequestParam(value="salt", defaultValue = "1483861299") String salt) {
+                          @RequestParam(value="salt", defaultValue = "1483966673") String salt) {
         String originStr =  DigestUtils.md5DigestAsHex(password.getBytes()) + salt;
 
         return DigestUtils.md5DigestAsHex(originStr.getBytes());

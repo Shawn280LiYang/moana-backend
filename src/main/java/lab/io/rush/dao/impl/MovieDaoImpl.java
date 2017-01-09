@@ -23,27 +23,7 @@ public class MovieDaoImpl implements MovieDao {
 
     @Override
     public Movie find(Long movieid) {
-        List<Movie> movies =  dataNucleusDao.querySelect("SELECT DISTINCT m FROM Movie m JOIN m.tags t WHERE m.id = " +movieid);
-
-        if(movies == null){
-            logger.debug("\n数据库连接中断\n");
-            return null;
-        }else if(movies.size()!=1){
-            logger.debug("\n未查询到数据\n");
-            return null;
-        }else{
-            return movies.get(0);
-        }
-    }
-
-    @Override
-    public Movie findNoTag(Long movieid) {
         return dataNucleusDao.find(Movie.class, movieid);
-    }
-
-    @Override
-    public List<Movie> findAll() {
-        return dataNucleusDao.querySelect("SELECT DISTINCT m FROM Movie m JOIN m.tags t ORDER BY m.id ASC");
     }
 
     @Override
@@ -53,7 +33,7 @@ public class MovieDaoImpl implements MovieDao {
 
     @Override
     public int getStock(Long movieid) {
-        Movie movie = findNoTag(movieid);
+        Movie movie = find(movieid);
 
         if(movie == null){
             return -1;

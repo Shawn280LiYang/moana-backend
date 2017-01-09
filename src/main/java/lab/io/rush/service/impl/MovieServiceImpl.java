@@ -24,12 +24,18 @@ public class MovieServiceImpl implements MovieService {
     private SimpleDateFormat df = new SimpleDateFormat("MM月dd日 HH:mm");
 
     @Override
-    public MovieDto getMovieById(Long id) {
+    public Movie find(Long id) {
+        return movieDao.find(id);
+    }
+
+    @Override
+    public MovieDto getMovieDto(Long id) {
         MovieDto dto = null;
         Movie entity =  movieDao.find(id);
 
         if(entity != null){
             dto = new MovieDto();
+
             dto.setId(id);
             dto.setName(entity.getName());
             dto.setTicketstock(entity.getTicketstock());
@@ -37,10 +43,11 @@ public class MovieServiceImpl implements MovieService {
             dto.setImgurl(entity.getImgurl());
             dto.setShowtime(df.format(entity.getShowtime()));
 
-            List<String> tags = null;
             if(entity.getTags()!=null) {
-                tags = new ArrayList<>();
+                List<String> tags = new ArrayList<>();
+
                 tags.addAll(entity.getTags().stream().map(Tag::getName).collect(Collectors.toList()));
+
                 dto.setTags(tags);
             }
         }
@@ -49,29 +56,29 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie getMovieNoTag(Long movieid) {
-        return movieDao.findNoTag(movieid);
+    public List<Movie> getMovieALlNoTag() {
+        return movieDao.findAllNoTag();
     }
 
     @Override
     public List<MovieDto> getMovieAll() {
         List<MovieDto> dtoList = null;
 
-        List<Movie> entityList = movieDao.findAll();
+        List<Movie> movieList = movieDao.findAllNoTag();
 
-        if(entityList!=null && entityList.size() > 0){
+        if(movieList!=null && movieList.size()>0){
+
             dtoList = new ArrayList<>();
 
-            for(int i = 0;i < entityList.size(); i ++){
-                dtoList.add(getMovieById(entityList.get(i).getId()));
+            for(int i=0; i<movieList.size(); i++){
+
+                MovieDto dto = getMovieDto(movieList.get(i).getId());
+
+                dtoList.add(dto);
             }
         }
-        return dtoList;
-    }
 
-    @Override
-    public List<Movie> getMovieALlNoTag() {
-        return movieDao.findAllNoTag();
+        return dtoList;
     }
 
     @Override

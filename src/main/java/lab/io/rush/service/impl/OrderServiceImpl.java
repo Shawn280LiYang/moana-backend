@@ -35,7 +35,7 @@ public class OrderServiceImpl implements OrderService{
         if(entity != null){
             dto = new OrderDto();
 
-            Movie movie =movieService.getMovieNoTag(entity.getMovieid());
+            Movie movie =movieService.find(entity.getMovieid());
 
             dto.setId(orderid);
             dto.setMovieimgurl(movie.getImgurl());
