@@ -89,7 +89,6 @@ public class LoginController {
 
         User user = userDao.findByUsername(username);
 
-
         if(user == null){
             result.put("responseCode", Code.COMMON_FAIL);
             result.put("responseMsg", "没有对应的用户名");

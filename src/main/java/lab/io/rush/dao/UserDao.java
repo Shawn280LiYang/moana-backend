@@ -13,8 +13,8 @@ public interface UserDao {
 
     @Caching(evict = {
             @CacheEvict(value="User", key = "'User-id:'+#user.id", beforeInvocation = true),
-            @CacheEvict(value="User", key = "'User-username'+#username", beforeInvocation = true),
-            @CacheEvict(value="User", key = "'User-group'+#group+'groupid'+#groupid", beforeInvocation = true)
+            @CacheEvict(value="User", key = "'User-username'+#user.username", beforeInvocation = true),
+            @CacheEvict(value="User", key = "'User-group'+#user.usergroup+'groupid'+#user.groupid", beforeInvocation = true)
     })
     User merge(User user);
 

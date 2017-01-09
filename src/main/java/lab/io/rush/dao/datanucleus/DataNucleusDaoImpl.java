@@ -100,7 +100,7 @@ public class DataNucleusDaoImpl implements DataNucleusDao {
 
             tx.commit();
             System.out.println(entity + " have been merged");
-            System.out.println("entity after merge: "+ result);
+            System.out.println("\n\nentity after merge: "+ result+"\n");
         }
         catch (Exception e)
         {
