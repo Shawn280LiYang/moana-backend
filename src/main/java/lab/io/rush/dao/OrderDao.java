@@ -1,6 +1,7 @@
 package lab.io.rush.dao;
 
 import lab.io.rush.entity.Order;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  */
 public interface OrderDao {
 
+    @Cacheable(value = "OrderDto", key = "'OrderDto-orderid'+#orderid")
     Order find(Long orderid);
 
     List<Order> findByUserid(Long userid);

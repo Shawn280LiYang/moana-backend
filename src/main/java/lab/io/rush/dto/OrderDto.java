@@ -1,11 +1,9 @@
 package lab.io.rush.dto;
 
-import java.io.Serializable;
-
 /**
  * Created by liyang on 17/1/4.
  */
-public class OrderDto implements Serializable {
+public class OrderDto {
 
     private Long id;
     private String moviename;

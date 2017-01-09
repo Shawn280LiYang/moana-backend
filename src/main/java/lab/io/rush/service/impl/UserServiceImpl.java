@@ -43,41 +43,10 @@ public class UserServiceImpl implements UserService {
                 orderDtoList.add(orderService.getOrderById(orderList.get(i).getId()));
             }
         }
-
         dto.setOrderDtoList(orderDtoList);
 
         return dto;
     }
-
-//    @Override
-//    public UserPanelDto getUserHome(Long userid) {
-//        UserPanelDto dto = new UserPanelDto();
-//
-//        //测试用,mock一下email
-//        httpSession.setAttribute("uid",userid);
-//        httpSession.setAttribute("email","ly6223283@qq.com");
-//
-//        User user = userDao.find(userid);
-//
-//        if(user!=null) {
-//            dto.setId(userid);
-//            dto.setPhoto(user.getPhoto());
-//            dto.setNickname(user.getNickname());
-//        }
-//
-//        List<OrderDto> orderDtoList = null;
-//
-//        List<Order> orderList = orderDao.findByUserid(userid);
-//        if(orderList.size() > 0){
-//            orderDtoList = new ArrayList<>();
-//            for(int i=0;i<orderList.size();i++){
-//                orderDtoList.add(orderService.getOrderById(orderList.get(i).getId()));
-//            }
-//        }
-//        dto.setOrderDtoList(orderDtoList);
-//
-//        return dto;
-//    }
 
     @Override
     public UserInfoDto getUserSetting() {
@@ -89,27 +58,4 @@ public class UserServiceImpl implements UserService {
 
         return dto;
     }
-
-//    @Override
-//    public UserInfoDto getUserSetting(Long userid) {
-//        UserInfoDto dto = new UserInfoDto();
-//
-//        //mock登陆
-//        httpSession.removeAttribute("uid");
-//        httpSession.removeAttribute("email");
-//        httpSession.setAttribute("uid",userid);
-//        httpSession.setAttribute("email","ly6223283@qq.com");
-//
-//
-//        User user = userDao.find(userid);
-//
-//        if(user!=null){
-//            dto.setNickname(user.getNickname());
-//            dto.setPhoto(user.getPhoto());
-//            dto.setEmail(user.getEmail());
-//        }
-//
-//        System.out.println(dto.toString());
-//        return dto;
-//    }
 }
