@@ -39,12 +39,8 @@ public class RedisConfig extends CachingConfigurerSupport{
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
         RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
 
-        // Number of seconds before expiration. Defaults to unlimited (0)
-        cacheManager.setDefaultExpiration(1200); // Sets the default expire time (in seconds)
-
-//        Map<String,Long> expires=new HashMap<>();
-//        expires.put("Stock",3L); //Sets movie ticket stock cache to expires in 3s
-//        cacheManager.setExpires(expires);
+        // Number of seconds before expiration(in seconds). Defaults to unlimited (0)
+        cacheManager.setDefaultExpiration(1200);
 
         return cacheManager;
     }

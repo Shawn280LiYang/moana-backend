@@ -13,7 +13,7 @@
 
         <properties>
             <!-- ENABLE THESE FOR MySQL/MariaDB -->
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://120.77.214.91:3306/moana_rush?useServerPrepStmts=false"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://120.77.214.91:3306/moana_cat?useServerPrepStmts=false"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.user" value="your user name"/>
             <property name="javax.persistence.jdbc.password" value="your password"/>

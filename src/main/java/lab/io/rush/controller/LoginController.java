@@ -96,10 +96,6 @@ public class LoginController {
         }
         else {
             if(user.getTimestamp() == 0) {
-
-                System.out.println("\n\n"+user.toString());
-                System.out.println("\n\nuser timestamp "+user.getTimestamp());
-
                 result.put("user",user);
 
                 result.put("responseCode", Code.DATA_NOT_FOUND);
@@ -114,19 +110,10 @@ public class LoginController {
                     try {
                         userDao.merge(user);
 
-//                        httpSession.removeAttribute("uid");
-//                        httpSession.removeAttribute("photo");
-//                        httpSession.removeAttribute("nickname");
-//                        httpSession.removeAttribute("email");
-
                         httpSession.setAttribute("uid", user.getId());
                         httpSession.setAttribute("photo",user.getPhoto());
                         httpSession.setAttribute("nickname",user.getNickname());
                         httpSession.setAttribute("email",user.getEmail());
-
-
-                        result.put("httpSessionUid",httpSession.getAttribute("uid"));
-
 
                         result.put("responseCode", Code.COMMON_SUCCESS);
                     } catch (Exception e) {

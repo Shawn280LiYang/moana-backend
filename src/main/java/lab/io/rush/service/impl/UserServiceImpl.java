@@ -34,19 +34,16 @@ public class UserServiceImpl implements UserService {
         dto.setPhoto((String)httpSession.getAttribute("photo"));
         dto.setNickname((String)httpSession.getAttribute("nickname"));
 
-        // TODO for test
-        dto.setNickname("Session uid: "+httpSession.getAttribute("uid")+"photo: "+httpSession.getAttribute("photo")+
-                " nickname"+httpSession.getAttribute("nickname"));
-
         List<OrderDto> orderDtoList = null;
-
         List<Order> orderList = orderDao.findByUserid((Long)httpSession.getAttribute("uid"));
+
         if(orderDtoList!=null){
             orderDtoList = new ArrayList<>();
             for(int i=0;i<orderList.size();i++){
                 orderDtoList.add(orderService.getOrderById(orderList.get(i).getId()));
             }
         }
+
         dto.setOrderDtoList(orderDtoList);
 
         return dto;
