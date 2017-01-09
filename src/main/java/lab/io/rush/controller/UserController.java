@@ -26,13 +26,37 @@ public class UserController {
     private HttpSession httpSession;
 
     @RequestMapping("/userPanel")
-    public UserPanelDto getUserPanelInfo(){
-        return userService.getUserHome();
+    public Map getUserPanelInfo(){
+        Map result = new HashMap<>();
+
+        try{
+            result.put("data",userService.getUserHome());
+            result.put("responseCode", Code.COMMON_SUCCESS);
+        }catch (Exception e){
+            e.printStackTrace();
+
+            result.put("responseCode", Code.COMMON_FAIL);
+            result.put("responseMsg", "获取用户主页信息失败");
+        }
+
+        return result;
     }
 
     @RequestMapping("/userInfo")
-    public UserInfoDto getUserSettingInfo(){
-        return userService.getUserSetting();
+    public Map getUserSettingInfo(){
+        Map result = new HashMap<>();
+
+        try{
+            result.put("data",userService.getUserSetting());
+            result.put("responseCode", Code.COMMON_SUCCESS);
+        }catch (Exception e){
+            e.printStackTrace();
+
+            result.put("responseCode", Code.COMMON_FAIL);
+            result.put("responseMsg", "获取用户信息失败");
+        }
+
+        return result;
     }
 
     @RequestMapping("/testSetSession")
