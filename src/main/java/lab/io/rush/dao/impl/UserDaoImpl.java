@@ -42,7 +42,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findByGroupidAndGroup(String groupid, String group) {
-        List<User> users = dataNucleusDao.querySelect("SELECT u FROM User u WHERE u.groupid = "+groupid+" AND u.group = '"+group+"'");
+        List<User> users = dataNucleusDao.querySelect("SELECT u FROM User u WHERE u.groupid = "+groupid+" AND u.usergroup = '"+group+"'");
         if((users == null) || (users!=null & users.size()!=1)) return null;
         else return users.get(0);
     }
