@@ -188,7 +188,7 @@ public class LoginController {
         httpSession.setAttribute("groupnickname",detailInfo.get("screen_name"));
         httpSession.setAttribute("photo",detailInfo.get("avatar_large"));
 
-        loginService.loginUserProcess((String)detailInfo.get("uid"),"wb");
+        loginService.loginUserProcess((String)detailInfo.get("idstr"),"wb");
 
         response.sendRedirect(URLDecoder.decode(backUrl, "UTF-8"));
     }
