@@ -132,7 +132,7 @@ public class MovieController {
         //判断:每个用户只能买两张相同的电影票
         List<OrderDto> purchased = orderService.findByMovieidAndUserid(movieid,(Long)httpSession.getAttribute("uid"));
 
-        if(purchased!=null & purchased.size() >= 20){ // TODO 后面改成2
+        if(purchased!=null && purchased.size() >= 20){ // TODO 后面改成2
             result.put("responseCode",Code.COMMON_FAIL);
             result.put("responseMsg","同一电影票同一用户不能买超过20张");
             return result;
