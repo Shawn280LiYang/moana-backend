@@ -1,9 +1,6 @@
 package lab.io.rush.controller;
 
-import lab.io.rush.dao.UserDao;
 import lab.io.rush.dto.Code;
-import lab.io.rush.dto.UserPanelDto;
-import lab.io.rush.dto.UserInfoDto;
 import lab.io.rush.entity.User;
 import lab.io.rush.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +97,7 @@ public class UserController {
     public Map updateUserInfo(@RequestParam String email, @RequestParam String nickname){
         Map result = new HashMap<>();
 
-        if((int)httpSession.getAttribute("uid") == -1){
+        if((Long)httpSession.getAttribute("uid") == -1L){
             User user = new User((String)httpSession.getAttribute("photo"),
                                  (String)httpSession.getAttribute("group"),
                                  (String)httpSession.getAttribute("groupid"),
@@ -117,6 +114,8 @@ public class UserController {
             //更新email和nickname
             user.setEmail(email);
             user.setNickname(nickname);
+            httpSession.setAttribute("nickname",nickname);
+            httpSession.setAttribute("email",email);
 
             //更新数据库
             userService.merge(user);

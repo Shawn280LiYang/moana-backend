@@ -55,7 +55,7 @@ public class LoginServiceImpl implements LoginService {
 
             userDao.merge(user);
         } else{ //新用户
-            httpSession.setAttribute("uid", -1);
+            httpSession.setAttribute("uid", -1L);
         }
     }
 

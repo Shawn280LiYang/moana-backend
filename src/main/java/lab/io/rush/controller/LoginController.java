@@ -42,7 +42,7 @@ public class LoginController {
             result.put("responseCode", Code.NOT_LOGIN);
             result.put("responseMsg", "检测登录态失败");
         }else{
-            if((int)uid == -1){
+            if((Long)uid == -1L){
                 result.put("responseCode", Code.LACK_OF_EMAIL);
                 result.put("responseMsg", "第三方新用户,邮箱信息缺失");
             }else{
@@ -194,10 +194,10 @@ public class LoginController {
     }
 
     @RequestMapping("/logout")
-    public void logout(@RequestParam(value = "redirect_url") String redirect_url,
+    public void logout(@RequestParam(value = "redirectUrl") String redirectUrl,
                        HttpServletResponse response) throws IOException {
         httpSession.removeAttribute("uid");
 
-        response.sendRedirect(URLDecoder.decode(redirect_url,"UTF-8"));
+        response.sendRedirect(URLDecoder.decode(redirectUrl,"UTF-8"));
     }
 }

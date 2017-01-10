@@ -57,7 +57,13 @@ public class UserServiceImpl implements UserService {
     public UserInfoDto getUserSetting() {
         UserInfoDto dto = new UserInfoDto();
 
-        dto.setNickname((String)httpSession.getAttribute("nickname"));
+        // nickname 要新老用户做判断
+        if(Integer.parseInt(httpSession.getAttribute("uid").toString()) == -1 ){
+            dto.setNickname((String)httpSession.getAttribute("groupnickname"));
+        }else{
+            dto.setNickname((String)httpSession.getAttribute("nickname"));
+        }
+
         dto.setPhoto((String)httpSession.getAttribute("photo"));
         dto.setEmail((String)httpSession.getAttribute("email"));
 
