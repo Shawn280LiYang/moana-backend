@@ -41,34 +41,22 @@ public class LoginServiceImpl implements LoginService {
     private static final String weiboAppSecret = "your appscret";
 
     @Override
-    public Map loginUserProcess(String uid, String group){
-        Map result = new HashMap<>();
+    public void loginUserProcess(String uid, String group){
 
         User user = userDao.findByGroupidAndGroup(uid,group);
 
-        if(user == null){
-            // 去注册页
-            result.put("responseCode", Code.LACK_OF_EMAIL);
-            result.put("responseMsg", "无邮箱信息,前往注册页");
-
-        }else{
-            // user info 放入session
+        if(user != null){ // 老用户
             httpSession.setAttribute("uid",user.getId());
             httpSession.setAttribute("email",user.getEmail());
             httpSession.setAttribute("nickname",user.getNickname());
 
-            // 更新数据库photo 以及与group有关的字段
             user.setPhoto((String)httpSession.getAttribute("photo"));
             user.setGroupnickname((String)httpSession.getAttribute("groupnickname"));
 
             userDao.merge(user);
-
-            // 去userpanel页
-            result.put("responseCode", Code.COMMON_SUCCESS);
-            result.put("responseMsg", "登陆成功,前往userPanel页");
+        } else{ //新用户
+            httpSession.setAttribute("uid", -1);
         }
-
-        return result;
     }
 
     @Override

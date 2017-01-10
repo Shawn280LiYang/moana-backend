@@ -38,12 +38,17 @@ public class LoginController {
 
         Object uid = httpSession.getAttribute("uid");
 
-        if(uid != null){
-            result.put("responseCode", Code.COMMON_SUCCESS);
-            result.put("responseMsg", "确认已登陆");
-        }else{
+        if(uid == null){
             result.put("responseCode", Code.NOT_LOGIN);
             result.put("responseMsg", "检测登录态失败");
+        }else{
+            if((int)uid == -1){
+                result.put("responseCode", Code.LACK_OF_EMAIL);
+                result.put("responseMsg", "第三方新用户,邮箱信息缺失");
+            }else{
+                result.put("responseCode", Code.COMMON_SUCCESS);
+                result.put("responseMsg", "确认已登陆");
+            }
         }
 
         return result;
@@ -136,7 +141,7 @@ public class LoginController {
         return DigestUtils.md5DigestAsHex(originStr.getBytes());
     }
 
-    @RequestMapping("/getWxAppid")
+    @RequestMapping("/getAppidwx")
     public Map getWxAppid(){
         Map result = new HashMap<>();
 
@@ -145,7 +150,7 @@ public class LoginController {
         return result;
     }
 
-    @RequestMapping("/getWbAppid")
+    @RequestMapping("/getAppidwb")
     public Map getWbAppid(){
         Map result = new HashMap<>();
 
@@ -155,7 +160,9 @@ public class LoginController {
     }
 
     @RequestMapping("/wxLogin")
-    public Map wechatLogin(@RequestParam(value="code", defaultValue = "") String code) {
+    public void wechatLogin(@RequestParam(value="backUrl",defaultValue = "") String backUrl,
+                            @RequestParam(value="code", defaultValue = "") String code,
+                            HttpServletResponse response) throws IOException {
         Map baseInfo = loginService.wxUserBaseInfo(code);
         Map detailInfo = loginService.wxUserDetailInfo(baseInfo); // 用户详情
 
@@ -164,11 +171,15 @@ public class LoginController {
         httpSession.setAttribute("groupnickname",detailInfo.get("nickname"));
         httpSession.setAttribute("photo",detailInfo.get("headimgurl"));
 
-        return loginService.loginUserProcess((String)detailInfo.get("openid"),"wx");
+        loginService.loginUserProcess((String)detailInfo.get("openid"), "wx");
+
+        response.sendRedirect(URLDecoder.decode(backUrl, "UTF-8"));
     }
 
     @RequestMapping("/wbLogin")
-    public Map weiboLogin(@RequestParam(value="code", defaultValue = "") String code) throws IOException {
+    public void weiboLogin(@RequestParam(value="backUrl",defaultValue = "") String backUrl,
+                           @RequestParam(value="code", defaultValue = "") String code,
+                           HttpServletResponse response ) throws IOException {
         Map baseInfo = loginService.wbUserBaseInfo(code);
         Map detailInfo = loginService.wbUserDetailInfo(baseInfo); // 用户详情
 
@@ -177,11 +188,14 @@ public class LoginController {
         httpSession.setAttribute("groupnickname",detailInfo.get("screen_name"));
         httpSession.setAttribute("photo",detailInfo.get("avatar_large"));
 
-        return loginService.loginUserProcess((String)detailInfo.get("uid"),"wb");
+        loginService.loginUserProcess((String)detailInfo.get("uid"),"wb");
+
+        response.sendRedirect(URLDecoder.decode(backUrl, "UTF-8"));
     }
 
     @RequestMapping("/logout")
-    public void logout(@RequestParam(value = "redirect_url") String redirect_url, HttpServletResponse response) throws IOException {
+    public void logout(@RequestParam(value = "redirect_url") String redirect_url,
+                       HttpServletResponse response) throws IOException {
         httpSession.removeAttribute("uid");
 
         response.sendRedirect(URLDecoder.decode(redirect_url,"UTF-8"));

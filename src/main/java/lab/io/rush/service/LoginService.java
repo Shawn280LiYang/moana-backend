@@ -6,7 +6,7 @@ import java.util.Map;
  * Created by liyang on 17/1/7.
  */
 public interface LoginService {
-    Map loginUserProcess(String uid, String group);
+    void loginUserProcess(String uid, String group);
 
     Map wxUserBaseInfo(String code);
     Map wxUserDetailInfo(Map baseInfo);

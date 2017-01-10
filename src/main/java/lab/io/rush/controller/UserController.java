@@ -100,7 +100,7 @@ public class UserController {
     public Map updateUserInfo(@RequestParam String email, @RequestParam String nickname){
         Map result = new HashMap<>();
 
-        if(httpSession.getAttribute("uid") == null){
+        if((int)httpSession.getAttribute("uid") == -1){
             User user = new User((String)httpSession.getAttribute("photo"),
                                  (String)httpSession.getAttribute("group"),
                                  (String)httpSession.getAttribute("groupid"),
