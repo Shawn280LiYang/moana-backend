@@ -16,8 +16,8 @@
             <!-- ENABLE THESE FOR MySQL/MariaDB -->
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://120.77.214.91:3306/cat?useServerPrepStmts=false"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.user" value="shawn"/>
-            <property name="javax.persistence.jdbc.password" value="liyang888"/>
+            <property name="javax.persistence.jdbc.user" value="your username"/>
+            <property name="javax.persistence.jdbc.password" value="your password"/>
 
             <property name="datanucleus.cache.level2.type" value="none"/>
         </properties>
