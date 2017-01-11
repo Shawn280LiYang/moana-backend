@@ -29,8 +29,8 @@ public class LoginController {
     @Autowired
     private HttpSession httpSession;
 
-    private static final String wxAppId = "your id";
-    private static final String wbAppId = "your id";
+    private static final String wxAppId = "your wx appid";
+    private static final String wbAppId = "your wb appid";
 
     @RequestMapping("/checkLogin")
     public Map checkLogin() throws IOException{

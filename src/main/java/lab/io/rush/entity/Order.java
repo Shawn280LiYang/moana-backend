@@ -9,7 +9,7 @@ import java.util.Date;
  */
 
 @Entity
-@Table (name = "order")
+@Table (name = "ORDER")
 public class Order implements Serializable {
 
     @Id
@@ -66,7 +66,7 @@ public class Order implements Serializable {
                 "id=" + id +
                 ", movieid=" + movieid +
                 ", userid=" + userid +
-                ", createdat=" + createtime +
+                ", createtime=" + createtime +
                 '}';
     }
 }

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -41,7 +42,7 @@ public class MovieController {
     public Map getMovieAll(){
         Map result = new HashMap<>();
 
-        result.put("data",movieService.getMovieAll());
+        result.put("data",movieService.getMovieAllWithTag());
 
         return result;
     }
@@ -56,7 +57,6 @@ public class MovieController {
     public Map getTicketStockAll(){
         Map result = new HashMap();
 
-        // 重写了这边的dao,这里不需要知道tag,所以不要用join查询, 提高查询效率 测试给出提升时间2s
         List<Movie> movieList = movieService.getMovieALlNoTag();
 
         if(movieList==null || movieList.size()==0){
@@ -81,49 +81,50 @@ public class MovieController {
     public Map getTicketStock(@PathVariable Long movieid){
         Map result = new HashMap();
 
-        Movie movie = movieService.find(movieid);
+        Movie movie = movieService.findNoTag(movieid);
 
         if(movie==null){
             result.put("responseCode", Code.DATA_NOT_FOUND);
             result.put("responseMsg", "未查询到,请检测数据库连接及电影ID");
         }else{
-            int stock = movieService.getStock(movieid); // TODO 这里在cache 而不用movie.getTicketStock()拿??我的猜想
-            result.put("responseCode", Code.COMMON_SUCCESS);
+            int stock = movieService.getStock(movieid);
+
             result.put("data", stock);
+            result.put("responseCode", Code.COMMON_SUCCESS);
         }
 
         return result;
     }
 
-    //cache测试
-//    @RequestMapping("/testCache")
-//    public void testCache(){
-//        List<Movie> movieList1 = movieService.getMovieALlNoTag();
-//
-//        if(movieList1==null || movieList1.size()==0){
-//        }else{
-//            Map stockList1 = new HashMap<>();
-//            System.out.println(System.currentTimeMillis());
-//            for(int i=0;i<movieList1.size();i++){
-//                stockList1.put(movieList1.get(i).getId(),movieService.getStock(movieList1.get(i).getId()));
-//            }
-//            System.out.println(System.currentTimeMillis());
-//            System.out.println("stockList1: "+stockList1);
-//        }
-//
-//        List<Movie> movieList2 = movieService.getMovieALlNoTag();
-//
-//        if(movieList2==null || movieList2.size()==0){
-//        }else{
-//            Map stockList2 = new HashMap<>();
-//            System.out.println(System.currentTimeMillis());
-//            for(int i=0;i<movieList2.size();i++){
-//                stockList2.put(movieList2.get(i).getId(),movieService.getStock(movieList2.get(i).getId()));
-//            }
-//            System.out.println(System.currentTimeMillis());
-//            System.out.println("stockList2: "+stockList2);
-//        }
-//    }
+    // Test for cache
+    @RequestMapping("/testCache")
+    public void testCache(){
+        List<Movie> movieList1 = movieService.getMovieALlNoTag();
+
+        if(movieList1==null || movieList1.size()==0){
+        }else{
+            Map stockList1 = new HashMap<>();
+            System.out.println(System.currentTimeMillis());
+            for(int i=0;i<movieList1.size();i++){
+                stockList1.put(movieList1.get(i).getId(),movieService.getStock(movieList1.get(i).getId()));
+            }
+            System.out.println(System.currentTimeMillis());
+            System.out.println("stockList1: "+stockList1);
+        }
+
+        List<Movie> movieList2 = movieService.getMovieALlNoTag();
+
+        if(movieList2==null || movieList2.size()==0){
+        }else{
+            Map stockList2 = new HashMap<>();
+            System.out.println(System.currentTimeMillis());
+            for(int i=0;i<movieList2.size();i++){
+                stockList2.put(movieList2.get(i).getId(),movieService.getStock(movieList2.get(i).getId()));
+            }
+            System.out.println(System.currentTimeMillis());
+            System.out.println("stockList2: "+stockList2);
+        }
+    }
 
     @RequestMapping("/rush/{movieid}")
     public Map makeOrder(@PathVariable Long movieid){
@@ -140,10 +141,9 @@ public class MovieController {
 
         Order order = new Order(movieid, (Long)httpSession.getAttribute("uid"));
 
-        // TODO 考虑用 procedure
         if(movieService.getStock(movieid) > 0){
             try {
-                Movie movie = movieService.find(movieid);
+                Movie movie = movieService.findNoTag(movieid);
                 movie.setTicketstock(movieService.getStock(movieid)-1);
                 movieService.merge(movie);
 

@@ -1,9 +1,11 @@
 package lab.io.rush.service.impl;
 
 import lab.io.rush.dao.MovieDao;
+import lab.io.rush.dao.MovieTagDao;
+import lab.io.rush.dao.TagDao;
 import lab.io.rush.dto.MovieDto;
 import lab.io.rush.entity.Movie;
-import lab.io.rush.entity.Tag;
+import lab.io.rush.entity.MovieTag;
 import lab.io.rush.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by liyang on 17/1/4.
@@ -20,18 +21,27 @@ import java.util.stream.Collectors;
 public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieDao movieDao;
+    @Autowired
+    private MovieTagDao movieTagDao;
+    @Autowired
+    private TagDao tagDao;
 
     private SimpleDateFormat df = new SimpleDateFormat("MM月dd日 HH:mm");
 
     @Override
-    public Movie find(Long id) {
-        return movieDao.find(id);
+    public Movie findNoTag(Long id) {
+        return movieDao.findNoTag(id);
+    }
+
+    @Override
+    public List<Movie> getMovieALlNoTag() {
+        return movieDao.findAllNoTag();
     }
 
     @Override
     public MovieDto getMovieDto(Long id) {
         MovieDto dto = null;
-        Movie entity =  movieDao.find(id);
+        Movie entity =  movieDao.findNoTag(id);
 
         if(entity != null){
             dto = new MovieDto();
@@ -43,10 +53,16 @@ public class MovieServiceImpl implements MovieService {
             dto.setImgurl(entity.getImgurl());
             dto.setShowtime(df.format(entity.getShowtime()));
 
-            if(entity.getTags()!=null) {
+            List<MovieTag> movieTagList = movieTagDao.findMovieTagByMovieid(id);
+
+            if(movieTagList!=null) {
+
                 List<String> tags = new ArrayList<>();
 
-                tags.addAll(entity.getTags().stream().map(Tag::getName).collect(Collectors.toList()));
+                for(int i=0; i<movieTagList.size();i++){
+                    Long tagid = movieTagList.get(i).getTagid();
+                    tags.add(tagDao.find(tagid).getName());
+                }
 
                 dto.setTags(tags);
             }
@@ -56,12 +72,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> getMovieALlNoTag() {
-        return movieDao.findAllNoTag();
-    }
-
-    @Override
-    public List<MovieDto> getMovieAll() {
+    public List<MovieDto> getMovieAllWithTag() {
         List<MovieDto> dtoList = null;
 
         List<Movie> movieList = movieDao.findAllNoTag();

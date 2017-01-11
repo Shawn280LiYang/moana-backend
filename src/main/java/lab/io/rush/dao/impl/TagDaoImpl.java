@@ -17,7 +17,8 @@ public class TagDaoImpl implements TagDao {
     DataNucleusDao dataNucleusDao;
 
     @Override
-    public void persist(Tag tag) {
-        dataNucleusDao.persist(tag);
+    public Tag find(Long id) {
+        return dataNucleusDao.find(Tag.class, id);
     }
+
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public class OrderDaoImpl implements OrderDao {
     @Autowired
-    @Qualifier("dataNucleusDaoImpl")
+    @Qualifier("dataNucleusDaoImpl") // TODO 观察可不可以去掉
     private DataNucleusDao dataNucleusDao;
 
     @Override
@@ -25,7 +25,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> findByUserid(Long userid) {
-        return dataNucleusDao.querySelect("SELECT o FROM Order o WHERE o.userid = "+userid+" ODER BY o.createtime ASC");
+        return dataNucleusDao.querySelect("SELECT o FROM Order o WHERE o.userid = "+userid+" ORDER BY o.createtime ASC");
     }
 
     @Override

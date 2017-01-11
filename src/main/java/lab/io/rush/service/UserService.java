@@ -10,9 +10,15 @@ import lab.io.rush.entity.User;
 public interface UserService {
 
     UserPanelDto getUserHome();
+
     UserInfoDto getUserSetting();
+
     User find(Long id);
+
     User findByUsername(String username);
+
     void persist(User user);
+
     User merge(User user);
+
 }

@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface OrderService {
 
-    OrderDto getOrderById(Long orderid);
+    OrderDto getOrderDto(Order order);
 
     List<OrderDto> findByMovieidAndUserid(Long movieid, Long userid);
 

@@ -2,7 +2,6 @@ package lab.io.rush.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lab.io.rush.dao.UserDao;
-import lab.io.rush.dto.Code;
 import lab.io.rush.entity.User;
 import lab.io.rush.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,16 +32,16 @@ public class LoginServiceImpl implements LoginService {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
-    private static final String wechatAppId = "your appid";
-    private static final String wechatAppSecret = "your appscret";
+    private static final String wechatAppId = "your wx appid";
+    private static final String wechatAppSecret = "your wx appSecret";
 
-    private static final String weiboAppId = "your appid";
-    private static final String weiboAppSecret = "your appscret";
+    private static final String weiboAppId = "your wb appid";
+    private static final String weiboAppSecret = "your wb appSecret";
 
     @Override
-    public void loginUserProcess(String uid, String group){
+    public void loginUserProcess(String groupid, String group){
 
-        User user = userDao.findByGroupidAndGroup(uid,group);
+        User user = userDao.findByGroupidAndGroup(groupid,group);
 
         if(user != null){ // 老用户
             httpSession.setAttribute("uid",user.getId());
@@ -55,9 +53,11 @@ public class LoginServiceImpl implements LoginService {
 
             userDao.merge(user);
         } else{ //新用户
+
             httpSession.setAttribute("uid", -1L);
         }
     }
+
 
     @Override
     public Map wxUserBaseInfo(String code) {

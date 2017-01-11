@@ -36,13 +36,14 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findByUsername(String username) {
         List<User> users = dataNucleusDao.querySelect("SELECT u FROM User u WHERE u.username = '"+username+"'");
+
         if((users == null) || (users!=null && users.size()!=1)) return null;
         else return users.get(0);
     }
 
     @Override
     public User findByGroupidAndGroup(String groupid, String group) {
-        List<User> users = dataNucleusDao.querySelect("SELECT u FROM User u WHERE u.groupid = '"+groupid+"' AND u.usergroup = '"+group+"'");
+        List<User> users = dataNucleusDao.querySelect("SELECT u FROM User u WHERE u.groupid = '" + groupid + "' AND u.usergroup = '"+group+"'");
         if((users == null) || (users!=null && users.size()!=1)) return null;
         else return users.get(0);
     }

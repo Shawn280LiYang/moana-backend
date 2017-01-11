@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table (name = "user")
+@Table (name = "USER")
 public class User implements Serializable {
 
     @Id
@@ -22,13 +22,13 @@ public class User implements Serializable {
     @Column(nullable = false, length = 48)
     private String email;
 
-    private String nickname = "Moana New User"; //TODO 写入constructor
+    private String nickname;
 
-    private String photo ="img/myheader.png";
+    private String photo;
 
     private Long timestamp;
 
-    private String usergroup = "user";
+    private String usergroup;
 
     private String groupid;
 
@@ -38,15 +38,16 @@ public class User implements Serializable {
     }
 
     //for signUp
-    public User(String usergroup, String username, String nickname, String email, String password) {
-        this.usergroup = usergroup;
+    public User(String username, String nickname, String email, String password) {
+        this.usergroup = "user"; //用户注册默认分组'user'
+        this.photo = "img/myheader.png"; // 用户注册获得默认头像
         this.username = username;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
     }
 
-    //for first sign wx/wb user
+    //for first sign wx/wb login
     public User(String photo, String usergroup, String groupid, String groupnickname, String email, String nickname) {
         this.photo = photo;
         this.usergroup = usergroup;

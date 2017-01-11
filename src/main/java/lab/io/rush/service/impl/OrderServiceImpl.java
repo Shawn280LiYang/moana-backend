@@ -27,17 +27,15 @@ public class OrderServiceImpl implements OrderService{
     private SimpleDateFormat df = new SimpleDateFormat("MM月dd日 HH:mm");
 
     @Override
-    public OrderDto getOrderById(Long orderid) {
+    public OrderDto getOrderDto(Order entity) {
         OrderDto dto = null;
-
-        Order entity =  orderDao.find(orderid);
 
         if(entity != null){
             dto = new OrderDto();
 
-            Movie movie =movieService.find(entity.getMovieid());
+            Movie movie =movieService.findNoTag(entity.getMovieid());
 
-            dto.setId(orderid);
+            dto.setId(entity.getId());
             dto.setMovieimgurl(movie.getImgurl());
             dto.setMoviename(movie.getName());
             dto.setMovieshowtime(df.format(movie.getShowtime()));
@@ -57,7 +55,7 @@ public class OrderServiceImpl implements OrderService{
             dtoList = new ArrayList<>();
 
             for(int i = 0;i < entityList.size(); i ++){
-                dtoList.add(getOrderById(entityList.get(i).getId()));
+                dtoList.add(getOrderDto(entityList.get(i)));
             }
         }
         return dtoList;

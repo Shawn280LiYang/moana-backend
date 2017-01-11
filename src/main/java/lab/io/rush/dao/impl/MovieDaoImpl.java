@@ -3,8 +3,6 @@ package lab.io.rush.dao.impl;
 import lab.io.rush.dao.MovieDao;
 import lab.io.rush.dao.datanucleus.DataNucleusDao;
 import lab.io.rush.entity.Movie;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,10 +17,8 @@ public class MovieDaoImpl implements MovieDao {
     @Autowired
     private DataNucleusDao dataNucleusDao;
 
-    private static final Logger logger = LoggerFactory.getLogger(MovieDao.class);
-
     @Override
-    public Movie find(Long movieid) {
+    public Movie findNoTag(Long movieid) {
         return dataNucleusDao.find(Movie.class, movieid);
     }
 
@@ -33,7 +29,7 @@ public class MovieDaoImpl implements MovieDao {
 
     @Override
     public int getStock(Long movieid) {
-        Movie movie = find(movieid);
+        Movie movie = findNoTag(movieid);
 
         if(movie == null){
             return -1;
@@ -43,12 +39,8 @@ public class MovieDaoImpl implements MovieDao {
     }
 
     @Override
-    public void persist(Movie movie) {
-        dataNucleusDao.persist(movie);
-    }
-
-    @Override
     public Movie merge(Movie movie) {
         return dataNucleusDao.merge(movie);
     }
+
 }

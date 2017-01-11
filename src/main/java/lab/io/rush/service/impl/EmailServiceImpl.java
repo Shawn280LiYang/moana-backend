@@ -41,10 +41,14 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public String createEmailContent(Order order){
-        String content = "Hello %s,\n\n您于 %s 成功抢购 <%s> 电影票1张.";
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String content = "Hello %s,\n\n您于 %s 成功抢购 <%s> 电影票1张. 您所购场次时间为: %s, 欢迎观影.";
+
+        SimpleDateFormat df = new SimpleDateFormat("MM月dd日 HH:mm:ss");
         String createtime =  df.format(order.getCreatetime());
-        content=String.format(content, userDao.find(order.getUserid()).getUsername(), createtime, movieService.find(order.getMovieid()).getName());
+        String showtime =  df.format(movieService.findNoTag(order.getMovieid()).getShowtime());
+
+        content=String.format(content, userDao.find(order.getUserid()).getNickname(), createtime,
+                                movieService.findNoTag(order.getMovieid()).getName(), showtime);
 
         return content;
     }

@@ -40,12 +40,16 @@ public class UserServiceImpl implements UserService {
 
         List<OrderDto> orderDtoList = null;
 
+        System.out.println("\n\nhttpSession uid is: "+httpSession.getAttribute("uid")+"\n");
+
         List<Order> orderList = orderDao.findByUserid((Long)httpSession.getAttribute("uid"));
 
-        if(orderDtoList!=null){
+        System.out.println("查到的orderList为: "+orderList);
+
+        if(orderList!=null){
             orderDtoList = new ArrayList<>();
             for(int i=0;i<orderList.size();i++){
-                orderDtoList.add(orderService.getOrderById(orderList.get(i).getId()));
+                orderDtoList.add(orderService.getOrderDto(orderList.get(i)));
             }
         }
         dto.setOrderDtoList(orderDtoList);
@@ -57,8 +61,8 @@ public class UserServiceImpl implements UserService {
     public UserInfoDto getUserSetting() {
         UserInfoDto dto = new UserInfoDto();
 
-        // nickname 要新老用户做判断
-        if(Integer.parseInt(httpSession.getAttribute("uid").toString()) == -1 ){
+        // nickname 新老用户做判断
+        if((Long)httpSession.getAttribute("uid") == -1L){
             dto.setNickname((String)httpSession.getAttribute("groupnickname"));
         }else{
             dto.setNickname((String)httpSession.getAttribute("nickname"));
@@ -89,4 +93,5 @@ public class UserServiceImpl implements UserService {
     public User merge(User user) {
         return userDao.merge(user);
     }
+
 }

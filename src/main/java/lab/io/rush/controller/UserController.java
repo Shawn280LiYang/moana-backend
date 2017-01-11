@@ -4,7 +4,6 @@ import lab.io.rush.dto.Code;
 import lab.io.rush.entity.User;
 import lab.io.rush.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -56,17 +55,6 @@ public class UserController {
         return result;
     }
 
-    @RequestMapping("/testSetSession")
-    public String testSetSession(){
-        this.httpSession.setAttribute("test", "This is a test");
-        return new String("finished");
-    }
-
-    @RequestMapping("/testGetSession")
-    public String testGetSession(){
-        return (String) this.httpSession.getAttribute("test");
-    }
-
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
     public Map signUp(@RequestParam String username, @RequestParam String nickname,
                       @RequestParam String email, @RequestParam String password){
@@ -76,11 +64,10 @@ public class UserController {
             result.put("responseCode", Code.COMMON_FAIL);
             result.put("responseMsg", "该用户名已存在");
         }else {
-            // 原密码进行一次md5加密
-            User user = new User("login", username, nickname, email, DigestUtils.md5DigestAsHex(password.getBytes()));
-            //存入数据库
+            User user = new User(username, nickname, email, password);
+
             userService.persist(user);
-            // 给与登录态并跳转(前端负责跳转)
+
             httpSession.setAttribute("uid",user.getId());
             httpSession.setAttribute("photo",user.getPhoto());
             httpSession.setAttribute("nickname",nickname);
@@ -102,22 +89,25 @@ public class UserController {
                                  (String)httpSession.getAttribute("group"),
                                  (String)httpSession.getAttribute("groupid"),
                                  (String)httpSession.getAttribute("groupnickname"), email, nickname);
-            //保存数据库
             userService.persist(user);
-            //标记登录态
+
             httpSession.setAttribute("uid",user.getId());
+
+            httpSession.setAttribute("nickname",nickname);
+            httpSession.setAttribute("email",email);
 
             result.put("responseCode", Code.COMMON_SUCCESS);
             result.put("responseMsg", "第三方登陆初始化成功");
         }else{
-            User user = userService.find((Long)httpSession.getAttribute("uid"));
-            //更新email和nickname
+            Long uid =(Long)httpSession.getAttribute("uid");
+            User user = userService.find(uid);
+
             user.setEmail(email);
             user.setNickname(nickname);
+
             httpSession.setAttribute("nickname",nickname);
             httpSession.setAttribute("email",email);
 
-            //更新数据库
             userService.merge(user);
 
             result.put("responseCode", Code.COMMON_SUCCESS);
