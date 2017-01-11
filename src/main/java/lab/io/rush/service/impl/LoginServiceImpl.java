@@ -5,9 +5,11 @@ import lab.io.rush.dao.UserDao;
 import lab.io.rush.entity.User;
 import lab.io.rush.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -16,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpSession;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -118,8 +121,10 @@ public class LoginServiceImpl implements LoginService {
     public Map restTemplateGet(String _url) {
         Map res = new HashMap();
 
+        StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        RestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build();
+
         try{
-            RestTemplate restTemplate = new RestTemplate();
             String result = restTemplate.getForObject(_url, String.class);
             ObjectMapper objectMapper = new ObjectMapper();
             res = objectMapper.readValue(result, HashMap.class);
