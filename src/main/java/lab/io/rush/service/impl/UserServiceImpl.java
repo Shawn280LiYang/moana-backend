@@ -40,11 +40,7 @@ public class UserServiceImpl implements UserService {
 
         List<OrderDto> orderDtoList = null;
 
-        System.out.println("\n\nhttpSession uid is: "+httpSession.getAttribute("uid")+"\n");
-
         List<Order> orderList = orderDao.findByUserid((Long)httpSession.getAttribute("uid"));
-
-        System.out.println("查到的orderList为: "+orderList);
 
         if(orderList!=null){
             orderDtoList = new ArrayList<>();
