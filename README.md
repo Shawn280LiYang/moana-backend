@@ -3,11 +3,14 @@
 ## Demo 地址： ##
 
 ### http://dev5.sprintechco.com ###
-注1：由于时间所限，目前项目的前端部分仅开发了移动版，建议使用手机或桌面浏览器开发者模式选择移动设备
+注1: 时间所限，目前项目的前端部分仅开发了移动版，建议使用手机或桌面浏览器开发者模式选择移动设备
 
-注2：线上版本还在继续开发中，预计1月10号完成，这之前会有测试导致功能可能无法完整体验，请见谅 :) 
+注2: 第三方登陆提供微信和微博登陆, 其中微信登陆只能在手机微信应用自带浏览器中使用,微博登陆各终端均可使用
 
-注3：页面效果见附图
+更新状态: 所有基本功能均打通, 后续将继续添加:
+1.前端添加notification组件优化交互, 后端增加退票接口并继续优化性能 
+2.目前支持用户修改昵称与邮箱,后期将支持所有用户修改头像
+3.'热门'目前无展示,后续将提供给用户售票统计信息,展示热门影片
 
 ## 主要技术 ##
 
@@ -40,14 +43,18 @@
 
 ![WechatIMG64.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG64.jpeg)
 
-### 用户个人主页 ###
+### 登陆页 ###
 
 ![WechatIMG65.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG65.jpeg)
 
-### 登录页 ###
+### 注册页 ###
 
 ![WechatIMG66.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG66.jpeg)
 
-### 用户信息修改页 ###
+### 用户主页 ###
 
 ![WechatIMG67.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG67.jpeg)
+
+### 用户信息修改页 ###
+
+![WechatIMG68.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG67.jpeg)
