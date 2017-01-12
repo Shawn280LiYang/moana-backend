@@ -13,5 +13,6 @@ public class Code {
     public static final int DATA_NOT_FOUND = 40003;
     public static final int EMAIL_FAIL = 40004;
     public static final int LACK_OF_EMAIL = 40005;
+    public static final int SOLD_OUT = 40006;
 
 }

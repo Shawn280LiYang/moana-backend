@@ -133,9 +133,9 @@ public class MovieController {
         //判断:每个用户只能买两张相同的电影票
         List<OrderDto> purchased = orderService.findByMovieidAndUserid(movieid,(Long)httpSession.getAttribute("uid"));
 
-        if(purchased!=null && purchased.size() >= 20){ // TODO 后面改成2
+        if(purchased!=null && purchased.size() >= 2){
             result.put("responseCode",Code.COMMON_FAIL);
-            result.put("responseMsg","同一电影票同一用户不能买超过20张");
+            result.put("responseMsg","同一电影票同一用户不能买超过2张");
             return result;
         }
 
@@ -157,7 +157,7 @@ public class MovieController {
                 result.put("responseMsg", "数据库操作错误");
             }
         }else{
-            result.put("responseCode",Code.COMMON_FAIL);
+            result.put("responseCode",Code.SOLD_OUT);
             result.put("responseMsg","电影票库存不足");
         }
 
