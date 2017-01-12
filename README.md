@@ -66,7 +66,7 @@
 
 ![WechatIMG69.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG69.jpeg)
 
-![WechatIMG69.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG69.jpeg)
+![WechatIMG69.jpeg](https://github.com/Shawn280LiYang/moana-backend/raw/master/screenshots/WechatIMG70.jpeg)
 
 
 
