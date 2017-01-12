@@ -197,6 +197,9 @@ public class LoginController {
     public void logout(@RequestParam(value = "redirectUrl") String redirectUrl,
                        HttpServletResponse response) throws IOException {
         httpSession.removeAttribute("uid");
+        httpSession.removeAttribute("groupnickname");
+        httpSession.removeAttribute("nickname");
+        httpSession.removeAttribute("email");
 
         response.sendRedirect(URLDecoder.decode(redirectUrl,"UTF-8"));
     }

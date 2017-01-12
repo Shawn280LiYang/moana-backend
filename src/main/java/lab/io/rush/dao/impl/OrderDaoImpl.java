@@ -25,7 +25,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> findByUserid(Long userid) {
-        return dataNucleusDao.querySelect("SELECT o FROM Order o WHERE o.userid = "+userid+" ORDER BY o.createtime ASC");
+        return dataNucleusDao.querySelect("SELECT o FROM Order o WHERE o.userid = "+userid+" ORDER BY o.createtime DESC");
     }
 
     @Override
